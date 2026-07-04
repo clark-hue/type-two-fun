@@ -1051,7 +1051,7 @@ function buildMessage(){
   const GAP = '  ';
   const TARGET_W = 5;
   const prefixLen = 2 + NAME_W + GAP.length + TARGET_W;
-  let headerPrefix = '❤️';
+  let headerPrefix = `🔥 ${state.streak} days`;
   headerPrefix = headerPrefix.padEnd(prefixLen, ' ');
   const header = headerPrefix + ' ' + DAY_LETTERS.join(' ');
 
@@ -1068,7 +1068,7 @@ function buildMessage(){
   });
 
   const note = state.messages[todayKey] || '';
-  let msg = `Check in streak: ${state.streak}\n\n\`\`\`\n${header}\n${lines.join('\n')}\n\`\`\``;
+  let msg = `\`\`\`\n${header}\n${lines.join('\n')}\n\`\`\``;
   if(note.trim()){
     msg += `\n\n${note.trim()}`;
   }
