@@ -130,6 +130,7 @@
     gap: 10px;
     flex: 1 1 auto;
     min-width: 0;
+    touch-action: none;
   }
 
   .item-stats{
@@ -787,15 +788,35 @@ function beginDrag(pointerId, row){
   dragState = { pointerId };
   row.classList.add('dragging');
   document.body.style.userSelect = 'none';
-  const prevTouchAction = document.body.style.touchAction;
-  document.body.style.touchAction = 'none';
+
+  const EDGE = 70;
+  const MAX_SPEED = 14;
+  let autoScrollSpeed = 0;
+  let rafId = null;
+
+  const scrollLoop = () => {
+    if(autoScrollSpeed !== 0){
+      window.scrollBy(0, autoScrollSpeed);
+    }
+    rafId = requestAnimationFrame(scrollLoop);
+  };
+  rafId = requestAnimationFrame(scrollLoop);
 
   const onMove = (ev) => {
     if(!dragState || ev.pointerId !== dragState.pointerId) return;
     ev.preventDefault();
+    const y = ev.clientY;
+    const vh = window.innerHeight;
+    if(y < EDGE){
+      autoScrollSpeed = -MAX_SPEED * (1 - y / EDGE);
+    } else if(y > vh - EDGE){
+      autoScrollSpeed = MAX_SPEED * (1 - (vh - y) / EDGE);
+    } else {
+      autoScrollSpeed = 0;
+    }
+
     const list = document.getElementById('items-list');
     const rows = Array.from(list.querySelectorAll('.item-row'));
-    const y = ev.clientY;
     let nextSibling = null;
     for(const sib of rows){
       if(sib === row) continue;
@@ -815,8 +836,8 @@ function beginDrag(pointerId, row){
     document.removeEventListener('pointermove', onMove);
     document.removeEventListener('pointerup', onUp);
     document.removeEventListener('pointercancel', onUp);
+    cancelAnimationFrame(rafId);
     document.body.style.userSelect = '';
-    document.body.style.touchAction = prevTouchAction;
     row.classList.remove('dragging');
     dragState = null;
     const list = document.getElementById('items-list');
