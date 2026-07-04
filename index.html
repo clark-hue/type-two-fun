@@ -787,6 +787,8 @@ function beginDrag(pointerId, row){
   dragState = { pointerId };
   row.classList.add('dragging');
   document.body.style.userSelect = 'none';
+  const prevTouchAction = document.body.style.touchAction;
+  document.body.style.touchAction = 'none';
 
   const onMove = (ev) => {
     if(!dragState || ev.pointerId !== dragState.pointerId) return;
@@ -814,6 +816,7 @@ function beginDrag(pointerId, row){
     document.removeEventListener('pointerup', onUp);
     document.removeEventListener('pointercancel', onUp);
     document.body.style.userSelect = '';
+    document.body.style.touchAction = prevTouchAction;
     row.classList.remove('dragging');
     dragState = null;
     const list = document.getElementById('items-list');
@@ -823,7 +826,7 @@ function beginDrag(pointerId, row){
     render();
   };
 
-  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointermove', onMove, { passive: false });
   document.addEventListener('pointerup', onUp);
   document.addEventListener('pointercancel', onUp);
 }
