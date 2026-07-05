@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Check-in tracker</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Type Two Fun">
+<title>Type Two Fun</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
 
@@ -422,8 +424,8 @@
     font-size: 12px;
     line-height: 1.6;
     color: #CECDC3;
-    overflow-x: auto;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-word;
     margin: 0 0 12px;
   }
 
@@ -490,6 +492,11 @@
   }
   button.danger:hover{ filter: brightness(1.15); }
 
+  .day-cell svg{
+    width: 14px;
+    height: 14px;
+  }
+
   .item-menu-wrap{ position: relative; flex-shrink:0; }
 
   .item-menu{
@@ -552,6 +559,7 @@
     .item-name{ font-size: 13px; }
     .days{ width: 100%; }
     .day-cell{ flex: 1 1 0; width: auto; height: auto; aspect-ratio: 1 / 1; font-size: 24px; }
+    .day-cell svg{ width: 22px; height: 22px; }
 
     .emoji-panel{
       width: 216px;
@@ -660,6 +668,12 @@ const DAY_LETTERS = ['M','T','W','T','F','S','S'];
 const STATE_ORDER = [null, 'done', 'not_done', 'rest'];
 const SYMBOL = { none: '·', done: '✓', not_done: '✗', rest: '—' };
 
+const ICONS = {
+  done: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  not_done: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+  rest: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>'
+};
+
 const DEFAULT_ITEMS = [
   { id: id(), emoji: '🏋️', name: 'gym', target: 5 },
   { id: id(), emoji: '🙆', name: 'mobility', target: 7 },
@@ -739,6 +753,15 @@ function saveState(){
 const today = new Date();
 today.setHours(0,0,0,0);
 const todayKey = fmtDate(today);
+
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible'){
+    const nowKey = fmtDate(new Date());
+    if(nowKey !== todayKey){
+      location.reload();
+    }
+  }
+});
 const week = weekDates(today);
 const weekKeys = week.map(fmtDate);
 
@@ -986,7 +1009,11 @@ function render(){
       if(k === todayKey) cls.push('today');
       if(val) cls.push(val);
       cell.className = cls.join(' ');
-      cell.textContent = val ? SYMBOL[val] : SYMBOL.none;
+      if(val){
+        cell.innerHTML = ICONS[val];
+      } else {
+        cell.textContent = SYMBOL.none;
+      }
       cell.title = DAY_LETTERS[i];
       cell.addEventListener('click', () => cycleState(item.id, k));
       days.appendChild(cell);
