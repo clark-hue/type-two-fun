@@ -248,9 +248,10 @@
 
   .add-row{
     display:flex;
+    align-items:center;
     gap: 8px;
     margin-top: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   input[type=text], input[type=number]{
@@ -268,19 +269,26 @@
   }
 
   #new-emoji{ width: 48px; text-align:center; }
-  #new-name{ flex: 1 1 140px; min-width: 100px; }
+  #new-name{
+    flex: 1 1 100px;
+    min-width: 40px;
+    height: 44px;
+    box-sizing: border-box;
+  }
 
   .stepper{
     display:flex;
     align-items:stretch;
+    height: 44px;
+    flex-shrink: 0;
     border: 1px solid var(--line);
     border-radius: 6px;
     background: var(--panel-2);
     overflow: hidden;
   }
   .stepper-btn{
-    width: 26px;
-    height: 34px;
+    width: 30px;
+    height: 100%;
     background: none;
     border: none;
     color: var(--ink-dim);
@@ -319,11 +327,11 @@
     margin: 0;
   }
 
-  .emoji-picker-wrap{ position: relative; }
+  .emoji-picker-wrap{ position: relative; flex-shrink: 0; }
 
   .emoji-trigger{
     width: 44px;
-    height: 36px;
+    height: 44px;
     background: var(--panel-2);
     border: 1px solid var(--line);
     border-radius: 6px;
@@ -379,6 +387,18 @@
     cursor: pointer;
   }
   button.primary:hover{ filter: brightness(1.08); }
+
+  #add-btn{
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  #add-btn .btn-plus{ display: none; align-items: center; justify-content: center; }
+  #add-btn .btn-plus svg{ width: 20px; height: 20px; }
 
   button.ghost{
     background: none;
@@ -569,6 +589,10 @@
     }
 
     .add-row{ gap: 6px; }
+    #new-name{ min-width: 0; }
+    #add-btn{ width: 44px; padding: 0; }
+    #add-btn .btn-plus{ display: flex; }
+    #add-btn .btn-label{ display: none; }
   }
 </style>
 </head>
@@ -608,7 +632,7 @@
         <input type="number" id="new-target" class="stepper-input" min="1" max="7" value="7" readonly tabindex="-1">
         <button type="button" class="stepper-btn" data-dir="1">+</button>
       </div>
-      <button class="primary" id="add-btn">add habit</button>
+      <button class="primary" id="add-btn"><span class="btn-plus"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span><span class="btn-label">add habit</span></button>
     </div>
   </div>
 
