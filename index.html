@@ -96,7 +96,8 @@
   }
 
   .card-title{
-    font-size: 11px;
+    font-size: 12px;
+    line-height: 18px;
     text-transform: none;
     letter-spacing: 1px;
     color: var(--ink-faint);
@@ -154,7 +155,7 @@
   .drag-handle:active{ cursor: grabbing; color: var(--ink); }
 
   .item-emoji{
-    font-size: 17px;
+    font-size: 20px;
     width: 22px;
     text-align:center;
     flex-shrink:0;
@@ -163,7 +164,8 @@
   .item-name{
     flex: 1 1 auto;
     min-width: 0;
-    font-size: 14px;
+    font-size: 16px;
+    line-height: 24px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -274,6 +276,8 @@
     min-width: 40px;
     height: 44px;
     box-sizing: border-box;
+    font-size: 16px;
+    line-height: 24px;
   }
 
   .stepper{
@@ -321,6 +325,7 @@
     cursor: default;
   }
   input.stepper-input:focus{ outline: none; border-color: var(--line) !important; }
+  #new-target{ font-size: 16px; line-height: 24px; }
   .stepper-input::-webkit-outer-spin-button,
   .stepper-input::-webkit-inner-spin-button{
     -webkit-appearance: none;
@@ -396,6 +401,8 @@
     justify-content: center;
     gap: 4px;
     white-space: nowrap;
+    font-size: 16px;
+    line-height: 24px;
   }
   #add-btn .btn-plus{ display: none; align-items: center; justify-content: center; }
   #add-btn .btn-plus svg{ width: 20px; height: 20px; }
@@ -419,7 +426,8 @@
     border-radius: 6px;
     color: var(--ink);
     font-family: inherit;
-    font-size: 13px;
+    font-size: 16px;
+    line-height: 24px;
     padding: 9px;
     resize: vertical;
     min-height: 60px;
@@ -578,7 +586,7 @@
     .item-stats{
       width: 100%;
     }
-    .item-name{ font-size: 13px; }
+    .item-name{ font-size: 16px; }
     .days{ width: 100%; }
     .day-cell{ flex: 1 1 0; width: auto; height: auto; aspect-ratio: 1 / 1; font-size: 24px; }
     .day-cell svg{ width: 22px; height: 22px; }
