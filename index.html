@@ -78,6 +78,7 @@
     font-weight: 600;
     color: var(--amber);
     line-height: 1;
+    cursor: pointer;
   }
 
   .streak .label{
@@ -623,7 +624,7 @@
       <p class="sub" id="week-range">this week</p>
     </div>
     <div class="streak">
-      <div class="num" id="streak-num">0</div>
+      <div class="num" id="streak-num" role="button" tabindex="0" title="Edit streak">0</div>
       <div class="label">day streak</div>
     </div>
   </header>
@@ -701,6 +702,24 @@
     <div class="confirm-actions">
       <button class="ghost" id="edit-cancel">cancel</button>
       <button class="primary" id="edit-save">save</button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="streak-overlay">
+  <div class="confirm-box">
+    <p>edit streak</p>
+    <div style="margin-bottom:16px;">
+      <label class="edit-field-label" for="streak-input">Day streak</label>
+      <div class="stepper" id="streak-stepper">
+        <button type="button" class="stepper-btn" data-dir="-1">−</button>
+        <input type="number" id="streak-input" class="stepper-input" min="0">
+        <button type="button" class="stepper-btn" data-dir="1">+</button>
+      </div>
+    </div>
+    <div class="confirm-actions">
+      <button class="ghost" id="streak-cancel">cancel</button>
+      <button class="primary" id="streak-save">save</button>
     </div>
   </div>
 </div>
@@ -1151,20 +1170,51 @@ function updatePreview(){
   document.getElementById('preview').textContent = buildMessage();
 }
 
-function wireStepper(container){
+function wireStepper(container, min = 1, max = 7){
   const input = container.querySelector('.stepper-input');
   container.querySelectorAll('.stepper-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const dir = parseInt(btn.dataset.dir, 10);
       let val = parseInt(input.value, 10);
-      if(isNaN(val)) val = 7;
-      val = Math.min(7, Math.max(1, val + dir));
+      if(isNaN(val)) val = min;
+      val = Math.min(max, Math.max(min, val + dir));
       input.value = val;
     });
   });
 }
 wireStepper(document.getElementById('new-target-stepper'));
 wireStepper(document.getElementById('edit-target-stepper'));
+wireStepper(document.getElementById('streak-stepper'), 0, 9999);
+
+function openStreakModal(){
+  document.getElementById('streak-input').value = state.streak;
+  document.getElementById('streak-overlay').classList.add('open');
+}
+
+function closeStreakModal(){
+  document.getElementById('streak-overlay').classList.remove('open');
+}
+
+document.getElementById('streak-num').addEventListener('click', openStreakModal);
+document.getElementById('streak-num').addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' || e.key === ' '){
+    e.preventDefault();
+    openStreakModal();
+  }
+});
+
+document.getElementById('streak-cancel').addEventListener('click', closeStreakModal);
+document.getElementById('streak-overlay').addEventListener('click', (e) => {
+  if(e.target.id === 'streak-overlay') closeStreakModal();
+});
+
+document.getElementById('streak-save').addEventListener('click', () => {
+  const val = Math.max(0, parseInt(document.getElementById('streak-input').value, 10) || 0);
+  state.streak = val;
+  saveState();
+  closeStreakModal();
+  render();
+});
 
 document.getElementById('day-message').addEventListener('input', (e) => {
   state.messages[todayKey] = e.target.value;
