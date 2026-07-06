@@ -393,16 +393,20 @@
   }
   button.primary:hover{ filter: brightness(1.08); }
 
+  #add-btn, #copy-btn{
+    font-size: 16px;
+    line-height: 24px;
+    padding: 10px 16px;
+    font-weight: 400;
+  }
+
   #add-btn{
-    height: 44px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
     white-space: nowrap;
-    font-size: 16px;
-    line-height: 24px;
   }
   #add-btn .btn-plus{ display: none; align-items: center; justify-content: center; }
   #add-btn .btn-plus svg{ width: 20px; height: 20px; }
@@ -600,7 +604,7 @@
 
     .add-row{ gap: 6px; }
     #new-name{ min-width: 0; }
-    #add-btn{ width: 44px; padding: 0; }
+    #add-btn{ width: 44px; height: 44px; padding: 0; }
     #add-btn .btn-plus{ display: flex; }
     #add-btn .btn-label{ display: none; }
   }
