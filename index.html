@@ -430,7 +430,7 @@
     line-height: 24px;
     padding: 9px;
     resize: none;
-    overflow-y: hidden;
+    field-sizing: content;
     min-height: 128px;
     box-sizing: border-box;
   }
@@ -993,7 +993,6 @@ function render(){
   document.getElementById('streak-num').textContent = state.streak;
   const dayMessageEl = document.getElementById('day-message');
   dayMessageEl.value = state.messages[todayKey] || '';
-  autoGrowTextarea(dayMessageEl);
 
   const list = document.getElementById('items-list');
   const emptyMsg = document.getElementById('empty-msg');
@@ -1159,16 +1158,10 @@ function wireStepper(container){
 wireStepper(document.getElementById('new-target-stepper'));
 wireStepper(document.getElementById('edit-target-stepper'));
 
-function autoGrowTextarea(el){
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
-}
-
 document.getElementById('day-message').addEventListener('input', (e) => {
   state.messages[todayKey] = e.target.value;
   saveState();
   updatePreview();
-  autoGrowTextarea(e.target);
 });
 
 const EMOJI_OPTIONS = [
