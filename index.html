@@ -1307,18 +1307,6 @@ document.getElementById('add-btn').addEventListener('click', () => {
 });
 
 document.getElementById('copy-btn').addEventListener('click', async () => {
-  const msg = buildMessage();
-  try{
-    await navigator.clipboard.writeText(msg);
-  }catch(e){
-    const ta = document.createElement('textarea');
-    ta.value = msg;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-  }
-
   if(state.lastCheckin === todayKey){
     // already checked in today, streak unchanged
   } else {
@@ -1334,6 +1322,18 @@ document.getElementById('copy-btn').addEventListener('click', async () => {
   }
   saveState();
   render();
+
+  const msg = buildMessage();
+  try{
+    await navigator.clipboard.writeText(msg);
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = msg;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
 
   const cm = document.getElementById('copied-msg');
   cm.classList.add('show');
